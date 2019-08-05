@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<link rel="stylesheet" href="css/bootstrap.min.css" />
+		<link rel="stylesheet" href="css/turing.css" />
+		<script type="text/javascript" src="js/jquery-3.4.1.min.js" ></script>
+		<script type="text/javascript" src="js/turing.js" ></script>
+	</head>
+	<body>
+		<div class="container">
+	<div class="row clearfix">
+		<div class="col-md-12 column">
+			<table class="table table-bordered table-hover table-condensed">
+				<thead>
+					<tr>
+						<th>
+							input
+						</th>
+						<th>
+							status
+						</th>
+						<th>
+							output
+						</th>
+						<th>
+							next status
+						</th>
+						<th>
+							options
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							<input type="text" class="form-control">
+						</td>
+						<td>
+							<input type="text" class="form-control">
+						</td>
+						<td>
+							<input type="text" class="form-control">
+						</td>
+						<td>
+							<select class="form-control">
+								<option value="">请选择</option>
+								<option value="next">向前一步</option>
+								<option value="back">向后一步</option>
+								<option value="write">写入</option>
+							</select>
+							<input type="text" class="form-control" style="display:none">
+						</td>
+						<td>
+							 <button type="button" class="btn btn-default">delete</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="col-md-12 column">
+			 <button type="button" class="btn btn-default">lock</button>
+		     <button type="button" class="btn btn-default">add</button>
+		</div>
+	</div>
+	<div class="row clearfix">
+		<div class="col-md-12 column tape">
+			<table class="table">
+				<tbody>
+					<tr>
+						<td>
+						</td>
+						<td>
+						</td>
+						<td>
+						</td>
+						<td>
+						</td>
+						<td>
+						</td>
+						<td>
+						</td>
+						<td>
+						</td>
+						<td>
+						</td>
+						<td>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+	</body>
+</html>
