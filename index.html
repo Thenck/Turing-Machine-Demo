@@ -6,92 +6,174 @@
 		<link rel="stylesheet" href="css/bootstrap.min.css" />
 		<link rel="stylesheet" href="css/turing.css" />
 		<script type="text/javascript" src="js/jquery-3.4.1.min.js" ></script>
+		<script type="text/javascript" src="js/handlebars-v4.1.2.js" ></script>
 		<script type="text/javascript" src="js/turing.js" ></script>
 	</head>
 	<body>
 		<div class="container">
-	<div class="row clearfix">
 		<div class="col-md-12 column">
 			<table class="table table-bordered table-hover table-condensed">
-				<thead>
 					<tr>
-						<th>
 							input
-						</th>
-						<th>
-							status
-						</th>
-						<th>
-							output
-						</th>
-						<th>
-							next status
-						</th>
-						<th>
-							options
-						</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>
-							<input type="text" class="form-control">
-						</td>
-						<td>
-							<input type="text" class="form-control">
-						</td>
-						<td>
-							<input type="text" class="form-control">
-						</td>
-						<td>
-							<select class="form-control">
-								<option value="">请选择</option>
-								<option value="next">向前一步</option>
-								<option value="back">向后一步</option>
-								<option value="write">写入</option>
-							</select>
-							<input type="text" class="form-control" style="display:none">
-						</td>
-						<td>
-							 <button type="button" class="btn btn-default">delete</button>
-						</td>
-					</tr>
-				</tbody>
-			</table>
+			<div class="row clearfix">
+				<div class="col-md-12 column program">
+					<table class="table table-bordered table-hover table-condensed program-table">
+						<thead>
+							<tr>
+								<th>
+									input
+								</th>
+								<th>
+									status
+								</th>
+								<th>
+									output
+								</th>
+								<th>
+									next status
+								</th>
+								<th>
+									options
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr class="program-item">
+								<td>
+									<input type="text" class="form-control input">
+								</td>
+								<td>
+									<input type="text" class="form-control status">
+								</td>
+								<td>
+									<select class="form-control output">
+										<option value="">请选择</option>
+										<option value="next">向前一步</option>
+										<option value="back">向后一步</option>
+										<option value="write">写入</option>
+									</select>
+									<input type="text" class="form-control output-write" style="display:none">
+								</td>
+								<td>
+									<input type="text" class="form-control status">
+								</td>
+								<td>
+									 <button type="button" class="btn btn-default delete-btn">delete</button>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="col-md-12 column">
+				     <button type="button" class="btn btn-default add-program">add</button>
+				</div>
+				<div class="col-md-12 column init-input">
+					<table class="table init-input-table">
+						<thead>
+							<tr>
+								<th>
+									index
+								</th>
+								<th>
+									input
+								</th>
+								<th>
+									options
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>
+									<input type="text" class="form-control index">
+								</td>
+								<td>
+									<input type="text" class="form-control inout">
+								</td>
+								<td>
+									 <button type="button" class="btn btn-default delete-btn">delete</button>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="col-md-12 column">
+				     <button type="button" class="btn btn-default add-init-item">add</button>
+				</div>
+			</div>
+			<div class="row clearfix">
+				<div class="col-md-12 column options">
+					<button type="button" class="btn btn-default lock-program">lock</button>
+					<button type="button" class="btn btn-default unlock-program" style="display: none;">unlock</button>
+				</div>
+			</div>
+			<div class="row clearfix">
+				<div class="col-md-12 column tape">
+					<table class="table">
+						<tbody>
+							<tr>
+								<td>
+								</td>
+								<td>
+								</td>
+								<td>
+								</td>
+								<td>
+								</td>
+								<td>
+								</td>
+								<td>
+								</td>
+								<td>
+								</td>
+								<td>
+								</td>
+								<td>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
 		</div>
-		<div class="col-md-12 column">
-			 <button type="button" class="btn btn-default">lock</button>
-		     <button type="button" class="btn btn-default">add</button>
-		</div>
-	</div>
-	<div class="row clearfix">
-		<div class="col-md-12 column tape">
-			<table class="table">
-				<tbody>
-					<tr>
-						<td>
-						</td>
-						<td>
-						</td>
-						<td>
-						</td>
-						<td>
-						</td>
-						<td>
-						</td>
-						<td>
-						</td>
-						<td>
-						</td>
-						<td>
-						</td>
-						<td>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-	</div>
-</div>
 	</body>
+	<script id="program-contentTpl" type="text/x-handlebars-template">
+		<tr class="program-item">
+			<td>
+				<input type="text" class="form-control input">
+			</td>
+			<td>
+				<input type="text" class="form-control status">
+			</td>
+			<td>
+				<select class="form-control output">
+					<option value="">请选择</option>
+					<option value="next">向前一步</option>
+					<option value="back">向后一步</option>
+					<option value="write">写入</option>
+				</select>
+				<input type="text" class="form-control output-write" style="display:none">
+			</td>
+			<td>
+				<input type="text" class="form-control status">
+			</td>
+			<td>
+				 <button type="button" class="btn btn-default delete-btn">delete</button>
+			</td>
+		</tr>
+	</script>
+	<script id="init-input-contentTpl" type="text/x-handlebars-template">
+		<tr>
+			<td>
+				<input type="text" class="form-control index">
+			</td>
+			<td>
+				<input type="text" class="form-control inout">
+			</td>
+			<td>
+				<button type="button" class="btn btn-default delete-btn">delete</button>
+			</td>
+		</tr>
+	</script>
+	
 </html>
