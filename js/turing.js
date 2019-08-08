@@ -36,6 +36,9 @@ $(function(){
 	$(".lock-program").on("click",function(){
 		$(".program-table").find("input").attr("readonly","readonly");
 		$(".program-table").find("select").attr("disabled","disabled");
+		$(".init-input-table").find("input").attr("readonly","readonly");
+		$(".init-input-table").find("select").attr("disabled","disabled");
+		
 		$(this).hide();
 		$(".unlock-program").show();
 		lockStatus = true;
@@ -44,6 +47,8 @@ $(function(){
 	$(".unlock-program").on("click",function(){
 		$(".program-table").find("input").attr("readonly",false);
 		$(".program-table").find("select").attr("disabled",false);
+		$(".init-input-table").find("input").attr("readonly",false);
+		$(".init-input-table").find("select").attr("disabled",false);
 		$(this).hide();
 		$(".lock-program").show();
 		lockStatus = false;
