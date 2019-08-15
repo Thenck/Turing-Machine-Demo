@@ -52,7 +52,7 @@
 									<input type="text" class="form-control output-write" value="no food">
 								</td>
 								<td>
-									<input type="text" class="form-control status" value="full">
+									<input type="text" class="form-control nextStatus" value="full">
 								</td>
 								<td>
 									 <button type="button" class="btn btn-default delete-btn">delete</button>
@@ -75,7 +75,7 @@
 									<input type="text" class="form-control output-write" style="display: none;" >
 								</td>
 								<td>
-									<input type="text" class="form-control status" value="hungry">
+									<input type="text" class="form-control nextStatus" value="hungry">
 								</td>
 								<td>
 									 <button type="button" class="btn btn-default delete-btn">delete</button>
@@ -98,7 +98,7 @@
 									<input type="text" class="form-control output-write" style="display: none;" >
 								</td>
 								<td>
-									<input type="text" class="form-control status" value="hungry">
+									<input type="text" class="form-control nextStatus" value="hungry">
 								</td>
 								<td>
 									 <button type="button" class="btn btn-default delete-btn">delete</button>
@@ -121,7 +121,7 @@
 									<input type="text" class="form-control output-write" value="food" >
 								</td>
 								<td>
-									<input type="text" class="form-control status" value="hungry">
+									<input type="text" class="form-control nextStatus" value="hungry">
 								</td>
 								<td>
 									 <button type="button" class="btn btn-default delete-btn">delete</button>
@@ -151,7 +151,7 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr>
+							<tr class="input-item">
 								<td>
 									<input type="text" class="form-control index" value="0">
 								</td>
@@ -162,7 +162,7 @@
 									 <button type="button" class="btn btn-default delete-btn">delete</button>
 								</td>
 							</tr>
-							<tr>
+							<tr class="input-item">
 								<td>
 									<input type="text" class="form-control index" value="1">
 								</td>
@@ -173,7 +173,7 @@
 									 <button type="button" class="btn btn-default delete-btn">delete</button>
 								</td>
 							</tr>
-							<tr>
+							<tr class="input-item">
 								<td>
 									<input type="text" class="form-control index" value="2">
 								</td>
@@ -184,7 +184,7 @@
 									 <button type="button" class="btn btn-default delete-btn">delete</button>
 								</td>
 							</tr>
-							<tr>
+							<tr class="input-item">
 								<td>
 									<input type="text" class="form-control index" value="3">
 								</td>
@@ -195,7 +195,7 @@
 									 <button type="button" class="btn btn-default delete-btn">delete</button>
 								</td>
 							</tr>
-							<tr>
+							<tr class="input-item">
 								<td>
 									<input type="text" class="form-control index" value="4">
 								</td>
@@ -206,7 +206,7 @@
 									 <button type="button" class="btn btn-default delete-btn">delete</button>
 								</td>
 							</tr>
-							<tr>
+							<tr class="input-item">
 								<td>
 									<input type="text" class="form-control index" value="5">
 								</td>
@@ -217,7 +217,7 @@
 									 <button type="button" class="btn btn-default delete-btn">delete</button>
 								</td>
 							</tr>
-							<tr>
+							<tr class="input-item">
 								<td>
 									<input type="text" class="form-control index" value="6">
 								</td>
@@ -228,7 +228,7 @@
 									 <button type="button" class="btn btn-default delete-btn">delete</button>
 								</td>
 							</tr>
-							<tr>
+							<tr class="input-item">
 								<td>
 									<input type="text" class="form-control index" value="7">
 								</td>
@@ -239,7 +239,7 @@
 									 <button type="button" class="btn btn-default delete-btn">delete</button>
 								</td>
 							</tr>
-							<tr>
+							<tr class="input-item">
 								<td>
 									<input type="text" class="form-control index" value="8">
 								</td>
@@ -250,7 +250,7 @@
 									 <button type="button" class="btn btn-default delete-btn">delete</button>
 								</td>
 							</tr>
-							<tr>
+							<tr class="input-item">
 								<td>
 									<input type="text" class="form-control index" value="9">
 								</td>
@@ -261,7 +261,7 @@
 									 <button type="button" class="btn btn-default delete-btn">delete</button>
 								</td>
 							</tr>
-							<tr>
+							<tr class="input-item">
 								<td>
 									<input type="text" class="form-control index" value="10">
 								</td>
@@ -285,7 +285,7 @@
 					<button type="button" class="btn btn-default unlock-program" style="display: none;">unlock</button>
 				</div>
 				<div class="col-md-12 column options">
-					<label>init status</label><input type="text" class="form-control input" value="hungry">
+					<label>init status</label><input type="text" class="form-control initStatus" value="hungry">
 					<button type="button" class="btn btn-default run-btn">run</button>
 					<button type="button" class="btn btn-default next-btn">next</button>
 					<button type="button" class="btn btn-default back-btn">back</button>
@@ -296,25 +296,7 @@
 				<div class="col-md-12 column tape">
 					<table class="table">
 						<tbody>
-							<tr>
-								<td>
-								</td>
-								<td>
-								</td>
-								<td>
-								</td>
-								<td>
-								</td>
-								<td>
-								</td>
-								<td>
-								</td>
-								<td>
-								</td>
-								<td>
-								</td>
-								<td>
-								</td>
+							<tr>							
 							</tr>
 						</tbody>
 					</table>
@@ -340,7 +322,7 @@
 				<input type="text" class="form-control output-write" style="display:none">
 			</td>
 			<td>
-				<input type="text" class="form-control status">
+				<input type="text" class="form-control nextStatus">
 			</td>
 			<td>
 				 <button type="button" class="btn btn-default delete-btn">delete</button>
@@ -348,12 +330,12 @@
 		</tr>
 	</script>
 	<script id="init-input-contentTpl" type="text/x-handlebars-template">
-		<tr>
+		<tr class="input-item">
 			<td>
 				<input type="text" class="form-control index">
 			</td>
 			<td>
-				<input type="text" class="form-control inout">
+				<input type="text" class="form-control input">
 			</td>
 			<td>
 				<button type="button" class="btn btn-default delete-btn">delete</button>

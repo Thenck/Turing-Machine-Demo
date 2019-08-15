@@ -1,5 +1,6 @@
 //program is lock
 var lockStatus = false;
+var turingMachine = null;
 $(function(){
 	//ouput
 	$(document).on("change",".output" ,function () {
@@ -39,6 +40,7 @@ $(function(){
 			$(".program-table").find("select").attr("disabled","disabled");
 			$(".init-input-table").find("input").attr("readonly","readonly");
 			$(".init-input-table").find("select").attr("disabled","disabled");
+			$(".initStatus").attr("readonly","readonly");
 			$(this).hide();
 			$(".unlock-program").show();
 			lockStatus = true;
@@ -50,6 +52,7 @@ $(function(){
 		$(".program-table").find("select").attr("disabled",false);
 		$(".init-input-table").find("input").attr("readonly",false);
 		$(".init-input-table").find("select").attr("disabled",false);
+		$(".initStatus").attr("readonly",false);
 		$(this).hide();
 		$(".lock-program").show();
 		lockStatus = false;
@@ -57,11 +60,69 @@ $(function(){
 	
 	$(".run-btn").on("click",function(){
 		if(lockStatus){
-			
+			var programs = getPrograms();
+			var allInputData = getAllInputData();
+			turingMachine = turing({
+				allInputData:allInputData,
+				programs:programs,
+				nextStepCallBack:function(){
+					
+				},
+				backStepCallBack:function(){
+					
+				},
+				domInit:buildTapeDom,
+				initStatus:$(".initStatus").val()
+			})
+			turingMachine.init();
 		}
 	})
 })
 
+function buildTapeDom(loopNum,allInputData){
+	for(var index = 1;index<=loopNum;++index){
+		for(var i in allInputData){
+			$(".tape").find("tr").append(getTapeItem(i,allInputData[i]));
+		}
+	}
+}
+
+function getTapeItem(index,inputData){
+	var html = '<td index="@index">@inputData</td>'
+	html = html.replace("@inputData",inputData)
+	html = html.replace("@index",index)
+	return html;
+}
+
+function getPrograms(){
+	var programs = new Array();
+	$(".program-table").find(".program-item").each(function(){
+		var inputData = $(this).find(".input").val();
+		var status = $(this).find(".status").val();
+		var output = $(this).find(".output").val();
+		var nextStatus = $(this).find(".nextStatus").val();
+		var outputData = $(this).find(".output-write").val();
+		var program =  { 
+			  inputData:inputData,
+			  status:status,
+			  outputData:outputData,
+			  output:output,
+			  nextStatus:nextStatus
+		}
+		programs.push(program);
+	})
+	return programs;
+}
+
+function getAllInputData(){
+	var allInputData = new Array();
+	$(".init-input-table").find("tbody").find(".input-item").each(function(){
+		var index = $(this).find(".index").val();
+		var inputData = $(this).find(".input").val();
+		allInputData.push(inputData);
+	})
+	return allInputData;
+}
 
 function lockCheck(){
 	var result = true;
@@ -123,6 +184,12 @@ function checkInitInput(){
 			$(this).removeClass("error");
 		}
 	})
+	if(!isNotNull($(".initStatus").val())){
+		result =false;
+		$(".initStatus").addClass("error");
+	}else{
+		$(".initStatus").removeClass("error");
+	}
 	return result;
 }
 
@@ -152,8 +219,21 @@ function turing(options){
 	var programsLength =  programs.length;
 	
 	var config,defaultOptions = {
+		allInputData:new Array(),
+		programs:new Array(),
 		isNeedCheck:true,
-		loopNum : 250
+		loopNum : 250,
+		initStatus:'',
+		domInit:function(){
+			
+		},
+		nextStepCallBack:function(){
+			
+		},
+		backStepCallBack:function(){
+			
+		}
+		
 	}
 	
 	var stacks = new Array();
@@ -177,27 +257,28 @@ function turing(options){
     }
     
     function init(){
-    	this.allInputData = options.allInputData;
-    	this.allInputDataLength = options.allInputData.length;
-    	this.programs = options.programs;
-    	this.programsLength = options.programsLength.length;
-    	this.now = {
+    	allInputData = config.allInputData;
+    	allInputDataLength = config.allInputData.length;
+    	programs = config.programs;
+    	programsLength = config.programs.length;
+    	now = {
     		step:0,
     		index:0,
-    		status:allInputData[0].status,
-			inputData:allInputData[0].inputData,
+    		status:	config.initStatus,
+			inputData:allInputData[0],
     	}
+    	config.domInit(config.loopNum,allInputData)
 //  	stacks.push(stack)
     }
     
     function nextStep(){
-    	this.now = getNextData()
-    	nextStepCallBack(this.now)
+    	now = getNextData()
+    	config.nextStepCallBack(this.now)
     }
     
     function backStep(){
-    	this.now = getBackData()
-		backStepCallBack(this.now);
+    	now = getBackData()
+		config.backStepCallBack(this.now);
     }
     
     function check(){
@@ -205,12 +286,12 @@ function turing(options){
     }
     
     function getNextData(){
-    	var inputData = this.now.inputData;
-    	var index = this.now.index;
-    	var step = this.now.step;
-    	var status = this.now.status;
-    	if(this.stacks[step]!=null&&this.stacks[step]!=undefined){
-    		return this.stacks[step];
+    	var inputData = now.inputData;
+    	var index = now.index;
+    	var step = now.step;
+    	var status = now.status;
+    	if(stacks[step]!=null&&stacks[step]!=undefined){
+    		return stacks[step];
     	}
     	var stack ={
     		inputData:inputData,
@@ -256,42 +337,37 @@ function turing(options){
     }
     
     function getBackData(){
-    	var inputData = this.now.inputData;
-    	var index = this.now.index;
-    	var step = this.now.step;
-    	var status = this.now.status;
+    	var inputData = now.inputData;
+    	var index = now.index;
+    	var step = now.step;
+    	var status = now.status;
 		if(step <=0){
 			return {
 				message:'The first step cannot be back'
 			}
 		}
-    	return this.stacks[stacks.length];
+    	return stacks[stacks.length];
     	
     }
     
     function getNextOutput(inputData,status){
-    	for(var index = 0;index <= this.programsLength.length;++index){
-    		var program = this.programs[index];
-    		if(inputData == porgram.inputData && status == porgram.status){
+    	for(var index = 0;index <= programsLength;++index){
+    		var program = programs[index];
+    		if(inputData == program.inputData && status == program.status){
     			return {
-    				output:output,
-    				outputData:porgram.outputData,
-    				nextStatus:porgram.nextStatus
+    				output:program.output,
+    				outputData:program.outputData,
+    				nextStatus:program.nextStatus
     			}
     		}
     	}
     	return null;
     }
 	
-}
-
-
-function programDirectives(inputData,status,outputData,nextStatus){
-	return { 
-	  inputData:inputData,
-	  status:status,
-	  outputData:outputData,
-	  output:output,
-	  nextStatus:nextStatus
+	return {
+		nextStep:nextStep,
+		backStep:backStep,
+		init:init
 	}
 }
+
