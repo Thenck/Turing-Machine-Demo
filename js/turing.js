@@ -104,6 +104,7 @@ function nextStepCallBack(now){
 	console.log(now);
 }
 
+// ----------------------------------------------------- build tapedom start--------------------------------------------------------------------- 
 function buildTapeDom(loopNum,allInputData){
 	$(".tape").find("tr").empty();
 	for(var index = 0;index<loopNum;++index){
@@ -119,7 +120,9 @@ function getTapeItem(index,inputData){
 	html = html.replace("@index",index)
 	return html;
 }
+// ----------------------------------------------------- build tapedom end --------------------------------------------------------------------- 
 
+// ----------------------------------------------------- init input start --------------------------------------------------------------------- 
 function getPrograms(){
 	var programs = new Array();
 	$(".program-table").find(".program-item").each(function(){
@@ -150,6 +153,9 @@ function getAllInputData(){
 	return allInputData;
 }
 
+// ----------------------------------------------------- init input end --------------------------------------------------------------------- 
+
+// ----------------------------------------------------- check start --------------------------------------------------------------------- 
 function lockCheck(){
 	var result = true;
 	
@@ -219,6 +225,9 @@ function checkInitInput(){
 	return result;
 }
 
+
+
+
 function isNotNull(value){
 	if(typeof(value)=="undefined"|| value==undefined||value == "" ){
 		return false;
@@ -226,7 +235,9 @@ function isNotNull(value){
 	return true;
 }
 
+// ----------------------------------------------------- check end ---------------------------------------------------------------------
 
+// ----------------------------------------------------- turing Machine component start ---------------------------------------------------------------------
 // outputEnum
 var outputEnum = {
     // 下一步
@@ -320,6 +331,8 @@ function turing(options){
     	
     }
     
+    
+     // getNextStepData if data not in the stacks push now in the stacks and get data in the allInputData
     function getNextData(){
     	var inputData = now.inputData;
     	var dataIndex = now.dataIndex;
@@ -376,6 +389,7 @@ function turing(options){
     	
     }
     
+    // getBackStepData in the stack
     function getBackData(){
       	var inputData = now.inputData;
     	var dataIndex = now.dataIndex;
@@ -391,6 +405,7 @@ function turing(options){
     	
     }
     
+    // find the output in the programs 
     function getNextOutput(inputData,status){
     	for(var index = 0;index <= programsLength;++index){
     		var program = programs[index];
@@ -412,3 +427,4 @@ function turing(options){
 	}
 }
 
+// ----------------------------------------------------- turing Machine component end ---------------------------------------------------------------------
