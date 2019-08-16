@@ -65,24 +65,50 @@ $(function(){
 			turingMachine = turing({
 				allInputData:allInputData,
 				programs:programs,
-				nextStepCallBack:function(){
-					
-				},
-				backStepCallBack:function(){
-					
-				},
+				nextStepCallBack:nextStepCallBack,
+				backStepCallBack:backStepCallBack,
 				domInit:buildTapeDom,
 				initStatus:$(".initStatus").val()
 			})
 			turingMachine.init();
+			$(".unlock-program").hide();
+		}
+	})
+	
+	$(".next-btn").on("click",function(){
+		if(lockStatus){
+			turingMachine.nextStep();
+		}
+	})
+		
+	$(".back-btn").on("click",function(){
+		if(lockStatus){
+			turingMachine.backStep();
 		}
 	})
 })
 
+function backStepCallBack(now){
+	var nowDom = $(".tape").find("tr").find("td[index='"+now.index+"']");
+	nowDom.text(now.inputData);
+	 $(".tape").find("tr").find("td").removeClass("isactive");
+	nowDom.addClass("isactive");
+	console.log(now);
+}
+
+function nextStepCallBack(now){
+	var nowDom = $(".tape").find("tr").find("td[index='"+now.index+"']");
+	nowDom.text(now.inputData);
+	$(".tape").find("tr").find("td").removeClass("isactive");
+	nowDom.addClass("isactive");
+	console.log(now);
+}
+
 function buildTapeDom(loopNum,allInputData){
-	for(var index = 1;index<=loopNum;++index){
+	$(".tape").find("tr").empty();
+	for(var index = 0;index<loopNum;++index){
 		for(var i in allInputData){
-			$(".tape").find("tr").append(getTapeItem(i,allInputData[i]));
+			$(".tape").find("tr").append(getTapeItem(Number(allInputData.length*index)+Number(i),allInputData[i]));
 		}
 	}
 }
@@ -264,6 +290,7 @@ function turing(options){
     	now = {
     		step:0,
     		index:0,
+    		dataIndex:0,
     		status:	config.initStatus,
 			inputData:allInputData[0],
     	}
@@ -273,12 +300,20 @@ function turing(options){
     
     function nextStep(){
     	now = getNextData()
-    	config.nextStepCallBack(this.now)
+    	if(now.message != "" || now.message != null || now.message != undefined){
+    		
+    		return ;
+    	}
+    	config.nextStepCallBack(now)
     }
     
     function backStep(){
     	now = getBackData()
-		config.backStepCallBack(this.now);
+    	if(now.message != "" || now.message != null || now.message != undefined){
+    		
+    		return ;
+    	}
+		config.backStepCallBack(now);
     }
     
     function check(){
@@ -287,6 +322,7 @@ function turing(options){
     
     function getNextData(){
     	var inputData = now.inputData;
+    	var dataIndex = now.dataIndex;
     	var index = now.index;
     	var step = now.step;
     	var status = now.status;
@@ -295,6 +331,7 @@ function turing(options){
     	}
     	var stack ={
     		inputData:inputData,
+    		dataIndex:dataIndex,
     		index:index,
     		step:step,
     		status:status
@@ -309,17 +346,19 @@ function turing(options){
     	
     	if(output.output == outputEnum.next){
     		index = index + 1;
-    		if(index>allInputDataLength){
-    			index = 0;
+    		dataIndex = dataIndex +1;
+    		if(dataIndex>allInputDataLength){
+    			dataIndex = 0;
     		}
-    		inputData = allInputData[index%allInputDataLength];
+    		inputData = allInputData[dataIndex%allInputDataLength];
     	}
     	if(output.output == outputEnum.back){
     		index = index - 1;
-    		if(index < 0){
-    			index = allInputDataLength;
+    		dataIndex = dataIndex -1;
+    		if(dataIndex < 0){
+    			dataIndex = allInputDataLength;
     		}
-    		inputData = allInputData[index];
+    		inputData = allInputData[dataIndex];
     	}
     	if(output.output == outputEnum.write){
     		inputData = output.outputData;
@@ -329,6 +368,7 @@ function turing(options){
     	
     	return {
     		inputData:inputData,
+    		dataIndex:dataIndex,
     		index:index,
     		step:step,
     		status:status
@@ -337,7 +377,8 @@ function turing(options){
     }
     
     function getBackData(){
-    	var inputData = now.inputData;
+      	var inputData = now.inputData;
+    	var dataIndex = now.dataIndex;
     	var index = now.index;
     	var step = now.step;
     	var status = now.status;
@@ -346,7 +387,7 @@ function turing(options){
 				message:'The first step cannot be back'
 			}
 		}
-    	return stacks[stacks.length];
+    	return stacks[step-1];
     	
     }
     
