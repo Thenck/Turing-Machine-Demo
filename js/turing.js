@@ -1,6 +1,7 @@
 //program is lock
 var lockStatus = false;
 var turingMachine = null;
+var runStatus = false;
 $(function(){
 	//ouput
 	$(document).on("change",".output" ,function () {
@@ -72,20 +73,36 @@ $(function(){
 			})
 			turingMachine.init();
 			$(".unlock-program").hide();
+			$(".run-btn").hide();
+			$(".quit-btn").show();
+			runStatus = true;
 		}
 	})
 	
 	$(".next-btn").on("click",function(){
-		if(lockStatus){
+		if(runStatus){
 			turingMachine.nextStep();
 		}
 	})
 		
 	$(".back-btn").on("click",function(){
-		if(lockStatus){
+		if(runStatus){
 			turingMachine.backStep();
 		}
 	})
+	
+	$(".quit-btn").on("click",function(){
+		if(runStatus){
+			turingMachine = null ;
+			$(".tape").find("tr").empty();
+			$(".unlock-program").show();
+			$(".run-btn").show();
+			$(".quit-btn").hide();
+			runStatus = false;
+		}
+	})
+	
+	
 })
 
 function backStepCallBack(now){
@@ -311,8 +328,7 @@ function turing(options){
     
     function nextStep(){
     	now = getNextData()
-    	if(now.message != "" || now.message != null || now.message != undefined){
-    		
+    	if(now.message != "" && now.message != undefined){
     		return ;
     	}
     	config.nextStepCallBack(now)
@@ -320,7 +336,7 @@ function turing(options){
     
     function backStep(){
     	now = getBackData()
-    	if(now.message != "" || now.message != null || now.message != undefined){
+    	if(now.message != "" && now.message != undefined){
     		
     		return ;
     	}
@@ -337,24 +353,24 @@ function turing(options){
     	var inputData = now.inputData;
     	var dataIndex = now.dataIndex;
     	var index = now.index;
-    	var step = now.step;
+    	var step = Number(now.step);
     	var status = now.status;
-    	if(stacks[step]!=null&&stacks[step]!=undefined){
-    		return stacks[step];
+    	if(stacks[step+1]!=null&&stacks[step+1]!=undefined){
+    		return stacks[step+1];
     	}
     	var stack ={
     		inputData:inputData,
     		dataIndex:dataIndex,
     		index:index,
     		step:step,
+    		message:'',
     		status:status
     	}
     	stacks.push(stack)
     	var output = getNextOutput(inputData,status);
     	if(output == null){
-    		return {
-    			"message":"Unable to find the corresponding program"
-    		}
+    		now.message = "Unable to find the corresponding program"
+    		return now;
     	}
     	
     	if(output.output == outputEnum.next){
@@ -384,6 +400,7 @@ function turing(options){
     		dataIndex:dataIndex,
     		index:index,
     		step:step,
+    		message:'',
     		status:status
     	}
     	
@@ -397,9 +414,8 @@ function turing(options){
     	var step = now.step;
     	var status = now.status;
 		if(step <=0){
-			return {
-				message:'The first step cannot be back'
-			}
+			now.message = 'The first step cannot be back';
+			return now;
 		}
     	return stacks[step-1];
     	
